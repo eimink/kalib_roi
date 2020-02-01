@@ -39,7 +39,7 @@ vec3 sc(vec2 uv, vec2 off, vec2 gx)
    
 }
 
-void mainImage()
+void main()
 {
     // Normalized pixel coordinates (from 0 to 1)
     vec2 uv = gl_FragCoord.xy/iResolution.xy;
