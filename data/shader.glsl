@@ -3,6 +3,8 @@
 uniform float iGlobalTime;
 uniform vec2 iResolution;
 
+uniform vec3 iMouse;
+
 float hash21(vec2 co)
 {
  	return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
@@ -28,33 +30,38 @@ float star(vec2 uv, vec2 p, float rot, float size)
     return max(0., (lm+ld)*size);
 }
 
-void main()
+vec3 sc(vec2 uv, vec2 off, vec2 gx)
+{
+    vec2 gxy =gx+off;
+    float h = hash21(gxy);
+    vec2 puv = uv-off;
+  return star(puv, vec2(h, fract(h*10.))*0.5+0.5, gxy.x+iTime*0.5, pow(fract(h*100.),3.)) * vec3(h, fract(10.*h),h*.4);
+   
+}
+
+void mainImage()
 {
     // Normalized pixel coordinates (from 0 to 1)
-    vec2 uv = gl_FragCoord.xy/iResolution.xy;
+    vec2 uv = gl_FragCoord/iResolution.xy;
     uv.y/= iResolution.x/iResolution.y;
 	
     uv*=10.;
-    uv.y+=iGlobalTime*0.8;
+    uv.y+=iTime*0.8;
     vec3 col = vec3(0.);
 
     vec2 guv = fract(uv);
     vec2 gx = floor(uv);
     
-    for( int i = -1; i < 1; i++)
-    {
-     for(int j = -1; j < 2; j++)
-     {
-        vec2 off = vec2(i,j);
-        vec2 gxy =gx+off;
-        
-        float h = hash21(gxy);
-        
-        vec2 puv = guv-off;
-    	col += star(puv, vec2(h, fract(h*10.))*0.5+0.5, gxy.x+iGlobalTime*0.5, pow(fract(h*100.),3.)) * vec3(h, fract(10.*h),h*.4);
-    	
-     }
-    }
+    col += sc(guv, vec2(-1, -1), gx);
+    col += sc(guv, vec2(0, -1), gx);
+    col += sc(guv, vec2(1, -1), gx);
+    col += sc(guv, vec2(-1, 0), gx);
+    col += sc(guv, vec2(0, 0), gx);
+    col += sc(guv, vec2(1, 0), gx);
+    col += sc(guv, vec2(-1, 1), gx);
+    col += sc(guv, vec2(0, 1), gx);
+    col += sc(guv, vec2(1, 1), gx);
+
     float h = hash21(gx);
     //col += star(guv, vec2(h, h), 0.5);
     
