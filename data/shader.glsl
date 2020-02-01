@@ -35,18 +35,18 @@ vec3 sc(vec2 uv, vec2 off, vec2 gx)
     vec2 gxy =gx+off;
     float h = hash21(gxy);
     vec2 puv = uv-off;
-  return star(puv, vec2(h, fract(h*10.))*0.5+0.5, gxy.x+iTime*0.5, pow(fract(h*100.),3.)) * vec3(h, fract(10.*h),h*.4);
+  return star(puv, vec2(h, fract(h*10.))*0.5+0.5, gxy.x+iGlobalTime*0.5, pow(fract(h*100.),3.)) * vec3(h, fract(10.*h),h*.4);
    
 }
 
 void mainImage()
 {
     // Normalized pixel coordinates (from 0 to 1)
-    vec2 uv = gl_FragCoord/iResolution.xy;
+    vec2 uv = gl_FragCoord.xy/iResolution.xy;
     uv.y/= iResolution.x/iResolution.y;
 	
     uv*=10.;
-    uv.y+=iTime*0.8;
+    uv.y+=iGlobalTime*0.8;
     vec3 col = vec3(0.);
 
     vec2 guv = fract(uv);
