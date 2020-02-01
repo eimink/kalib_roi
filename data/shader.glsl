@@ -3,8 +3,6 @@
 uniform float iGlobalTime;
 uniform vec2 iResolution;
 
-uniform vec3 iMouse;
-
 float hash21(vec2 co)
 {
  	return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
@@ -30,22 +28,22 @@ float star(vec2 uv, vec2 p, float rot, float size)
     return max(0., (lm+ld)*size);
 }
 
-void mainImage()
+void main()
 {
     // Normalized pixel coordinates (from 0 to 1)
-    vec2 uv = gl_FragCoord/iResolution.xy;
+    vec2 uv = gl_FragCoord.xy/iResolution.xy;
     uv.y/= iResolution.x/iResolution.y;
 	
     uv*=10.;
-    uv.y+=iTime*0.8;
+    uv.y+=iGlobalTime*0.8;
     vec3 col = vec3(0.);
 
     vec2 guv = fract(uv);
     vec2 gx = floor(uv);
     
-    for( int i = -1; i < 3; i++)
+    for( int i = -1; i < 1; i++)
     {
-     for(int j = -1; j < 3; j++)
+     for(int j = -1; j < 2; j++)
      {
         vec2 off = vec2(i,j);
         vec2 gxy =gx+off;

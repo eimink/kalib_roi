@@ -9,28 +9,34 @@ float  HEIGHT = 800;
 int pot[] = {64,64,64};
 int btn[] = {1,1,1};
 int prevBtn[] = {1,1,1};
-int currentScreen = 1;
-int idxScreen = 1;
-int prevScreen = 1;
+int currentScreen = 99;
+int idxScreen = 99;
+int prevScreen = 99;
 int targetScreen = 0;
 int prevTarget = 0;
 long start = millis();
 long timer = millis();
 
 
-String[] screens = {"KALIB ROI","BIL KORI A","LAIKI BRO"};
-String[] targets = {"000","012074127","42375709*3"};
-int[][] answers = {{0,0,0},{12,74,127},{127,127,127}};
-boolean screenCompleted[] = {false,false,false};
+String[] screens = {"BORI KALI","KALIB ROI","BIL KORI A","IKI LABRO", "ORB ALIKI", "LAIKI BRO"};
+String[] targets = {"30 90 120","000","012074127","12*4 12+30 128-64","0x0A 0x20 0x66", "42375709*3"};
+int[][] answers = {{30,90,120},{0,0,0},{12,74,127},{48,42,64},{0x0A,0x20,0x66},{127,127,127}};
+boolean screenCompleted[] = {false,false,false,false,false,false};
+boolean firstRun = true;
 
 PFont font;
+PShader shader;
 
 void settings() {
-  fullScreen(P3D);
-  //size(240,400,P3D);
+  //fullScreen(P3D);
+  size(240,400,P3D);
 }
 
 void setup() {
+  shader = loadShader("shader.glsl");
+  shader.set("iResolution",(float)WIDTH,(float)HEIGHT);
+  /*shader.set("iMouse",(float)pot[0]/127,(float)pot[1]/127);
+  */
   printArray(Serial.list());
   myPort = new Serial(this, Serial.list()[1],115200);
   font = createFont("Orbitron.ttf",48);
@@ -80,8 +86,10 @@ void drawEndScreen() {
   textAlign(CENTER,CENTER);
   fill(0,255,0,255);
   text("KALIB ROI",0,-300);
+  if (!firstRun) {
   text("SUORI TETU'D",0,-200);
   text(timer,0,-100);
+  }
   fill(0,0,255,255);
   text("ENGAGE",0,200);
   popMatrix();
@@ -97,16 +105,16 @@ void drawGameScreen(int i, int t1, int t2, int t3) {
       screenCompleted[i] = true;
       targetScreen++;
     }
-    text(screens[i],0,-300);
-  text(t1,-100,-100);
-  text(t2,0,-100);
-  text(t3,100,-100);
+    text(screens[i],0,-100);
+  text(t1,-100,100);
+  text(t2,0,100);
+  text(t3,100,100);
   } else {
     fill(255,0,0,255);
-    text(screens[i],0,-300);
-  text(pot[0],-100,-100);
-  text(pot[1],0,-100);
-  text(pot[2],100,-100);
+    text(screens[i],0,-100);
+  text(pot[0],-100,100);
+  text(pot[1],0,100);
+  text(pot[2],100,100);
   }
   
   popMatrix();
@@ -121,6 +129,7 @@ void resetGame() {
   prevScreen = 1;
   targetScreen = 0;
   prevTarget = 0;
+  firstRun = false;
   start = millis();
   timer = millis();
 }
@@ -152,8 +161,8 @@ void draw(){
     prevBtn[2] = btn[2];
     if(btn[0] == 0) idxScreen--;
     if(btn[2] == 0) idxScreen++;
-    if (idxScreen > 3) idxScreen = 1;
-    if (idxScreen < 1) idxScreen = 3;
+    if (idxScreen > screens.length) idxScreen = 1;
+    if (idxScreen < 1) idxScreen = screens.length;
     prevScreen = idxScreen;
   }
   if (currentScreen == 99 && btn[1] == 0)
@@ -163,15 +172,20 @@ void draw(){
   if (btn[1] == 0 && currentScreen != 99) currentScreen = 0;
   else currentScreen = idxScreen;
   background(0,0,0);
+
+  shader(shader);
+  shader.set("iGlobalTime",(float)millis()/1000);
+  rect(0,0,WIDTH,HEIGHT);
   translate(width/2,height/2,0);
   scale(width/WIDTH,height/HEIGHT,width/WIDTH);
+  resetShader();
   noLights();
   hint(DISABLE_DEPTH_TEST);
   switch(currentScreen) {
     case 0:
       drawScreen1(targets[targetScreen],screens[targetScreen]);
       break;
-    case 1:
+    /*case 1:
       drawGameScreen(0,answers[0][0],answers[0][1],answers[0][2]);
       break;
       case 2:
@@ -179,12 +193,13 @@ void draw(){
       break;
       case 3:
       drawGameScreen(2,answers[2][0],answers[2][1],answers[2][2]);
-      break;
-      default:
-      drawScreen1(targets[0],screens[0]);
+      break;*/
       case 99:
       drawEndScreen();
       break;
+      default:
+      drawGameScreen(currentScreen-1,answers[currentScreen-1][0],answers[currentScreen-1][1],answers[currentScreen-1][2]);
+      
   }
 }
   
