@@ -15,8 +15,8 @@ float star(vec2 uv, vec2 p, float rot, float size)
     uv-=p;
     float x = uv.x;
     float y = uv.y;
-    uv.x = sin(rot)*x + cos(rot)*y;
-    uv.y = cos(rot)*x - sin(rot)*y;
+//    uv.x = sin(rot)*x + cos(rot)*y;
+//    uv.y = cos(rot)*x - sin(rot)*y;
     uv+=p;
     
     float lm = 1.0-min(abs(uv.x- p.x), abs(uv.y-p.y));
@@ -45,7 +45,7 @@ void main()
     vec2 uv = gl_FragCoord.xy/iResolution.xy;
     uv.y/= iResolution.x/iResolution.y;
 	
-    uv*=10.;
+    uv*=5.;
     uv.y+=iGlobalTime*0.8;
     vec3 col = vec3(0.);
 
@@ -58,9 +58,9 @@ void main()
     col += sc(guv, vec2(-1, 0), gx);
     col += sc(guv, vec2(0, 0), gx);
     col += sc(guv, vec2(1, 0), gx);
-    col += sc(guv, vec2(-1, 1), gx);
+/*    col += sc(guv, vec2(-1, 1), gx);
     col += sc(guv, vec2(0, 1), gx);
-    col += sc(guv, vec2(1, 1), gx);
+    col += sc(guv, vec2(1, 1), gx);*/
 
     float h = hash21(gx);
     //col += star(guv, vec2(h, h), 0.5);

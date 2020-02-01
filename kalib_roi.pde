@@ -28,8 +28,8 @@ PFont font;
 PShader shader;
 
 void settings() {
-  //fullScreen(P3D);
-  size(240,400,P3D);
+  fullScreen(P3D);
+  //size(240,400,P3D);
 }
 
 void setup() {
