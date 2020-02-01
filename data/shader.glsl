@@ -2,8 +2,7 @@
 // here.
 uniform float iGlobalTime;
 uniform vec2 iResolution;
-
-uniform vec3 iMouse;
+uniform vec3 iPots;
 
 float hash21(vec2 co)
 {
@@ -15,8 +14,8 @@ float star(vec2 uv, vec2 p, float rot, float size)
     uv-=p;
     float x = uv.x;
     float y = uv.y;
-//    uv.x = sin(rot)*x + cos(rot)*y;
-//    uv.y = cos(rot)*x - sin(rot)*y;
+    uv.x = sin(1.0-iPots.x)*x + cos(1.0-iPots.y)*y;
+    uv.y = cos(1.0-iPots.z)*x - sin(1.0-iPots.z)*y;
     uv+=p;
     
     float lm = 1.0-min(abs(uv.x- p.x), abs(uv.y-p.y));

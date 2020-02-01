@@ -18,7 +18,7 @@ long start = millis();
 long timer = millis();
 
 
-String[] screens = {"BORI KALI","KALIB ROI","BIL KORI A","IKI LABRO", "ORB ALIKI", "LAIKI BRO"};
+String[] screens = {"BORI KALI","LAIKI BRO","BIL KORI A","IKI LABRO", "ORB ALIKI", "KALIB ROI"};
 String[] targets = {"30 90 120","000","012074127","12*4 12+30 128-64","0x0A 0x20 0x66", "42375709*3"};
 int[][] answers = {{30,90,120},{0,0,0},{12,74,127},{48,42,64},{0x0A,0x20,0x66},{127,127,127}};
 boolean screenCompleted[] = {false,false,false,false,false,false};
@@ -35,8 +35,7 @@ void settings() {
 void setup() {
   shader = loadShader("shader.glsl");
   shader.set("iResolution",(float)WIDTH,(float)HEIGHT);
-  /*shader.set("iMouse",(float)pot[0]/127,(float)pot[1]/127);
-  */
+  shader.set("iPots",(float)pot[0]/127,(float)pot[1]/127,(float)pot[2]/127);
   printArray(Serial.list());
   myPort = new Serial(this, Serial.list()[1],115200);
   font = createFont("Orbitron.ttf",48);
@@ -175,6 +174,7 @@ void draw(){
 
   shader(shader);
   shader.set("iGlobalTime",(float)millis()/1000);
+  shader.set("iPots",(float)pot[0]/127,(float)pot[1]/127,(float)pot[2]/127);
   rect(0,0,WIDTH,HEIGHT);
   translate(width/2,height/2,0);
   scale(width/WIDTH,height/HEIGHT,width/WIDTH);
