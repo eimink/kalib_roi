@@ -6,6 +6,9 @@ This game was created during Global Game Jam 2020.
 
 https://globalgamejam.org/2020/games/kalib-roi-5
 
+## Gameplay video
+[![KALIB ROI Gameplay](http://img.youtube.com/vi/R1bLdnSRcd8/0.jpg)](http://www.youtube.com/watch?v=R1bLdnSRcd8 "KALIB ROI Gameplay")
+
 ## Credits
 Code: Teppo Kauppinen
 
