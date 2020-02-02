@@ -6,9 +6,11 @@ This game was created during Global Game Jam 2020.
 
 https://globalgamejam.org/2020/games/kalib-roi-5
 
-# Credits
+## Credits
 Code: Teppo Kauppinen
+
 Shader: Henri Sarasvirta, Teppo Kauppinen
+
 Font: Orbitron licensed under Open Font License
 
 Kudos to people behind https://github.com/mrautio/graffathon19-demo-one-scene
